@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:spotify_clone_ui/home/ui/widgets/ui_widget.dart';
 import 'package:spotify_clone_ui/ui/cards/cards.dart';
+import 'package:spotify_clone_ui/ui/lists/suggestions_list.dart';
 
 /// Screen of home tab. Contains artist and playlist lists
 class HomeScreen extends StatelessWidget {
@@ -13,6 +14,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cardSized = (MediaQuery.of(context).size.width - 30) / 2.3;
     return SafeArea(
       bottom: false,
       child: SingleChildScrollView(
@@ -21,7 +23,7 @@ class HomeScreen extends StatelessWidget {
           children: [
             const TopBarWidget(),
             Container(
-              height: 1000,
+              height: 1500,
               width: double.infinity,
               color: Colors.grey,
               child: Column(
@@ -30,7 +32,7 @@ class HomeScreen extends StatelessWidget {
                     height: 20,
                   ),
                   SingerCardWidget(
-                    size: 200,
+                    size: cardSized,
                     name: 'HuskyHuskyHuskyHuskyHusky',
                     imageUrl: 'assets/images/artists/husky.png',
                     onTap: () {
@@ -38,15 +40,8 @@ class HomeScreen extends StatelessWidget {
                     },
                   ),
                   PlayListCardWidget(
-                    size: 200,
+                    size: cardSized,
                     names: const [
-                      'Husky',
-                      'Husky',
-                      'Husky',
-                      'Husky',
-                      'Husky',
-                      'Husky',
-                      'Husky',
                       'Husky',
                       'Husky',
                       'Husky',
@@ -57,6 +52,130 @@ class HomeScreen extends StatelessWidget {
                     onTap: () {
                       log('artist tap');
                     },
+                  ),
+                  SuggestionListWidget(
+                    cardSize: cardSized,
+                    name: "playlist name",
+                    list: [
+                      PlayListCardWidget(
+                        size: cardSized,
+                        names: const [
+                          'Husky',
+                          'Husky',
+                          'Husky',
+                          'Husky',
+                          'Husky',
+                        ],
+                        imageUrl: 'assets/images/artists/husky.png',
+                        onTap: () {
+                          log('artist tap');
+                        },
+                      ),
+                      PlayListCardWidget(
+                        size: cardSized,
+                        names: const [
+                          'Husky',
+                          'Husky',
+                          'Husky',
+                          'Husky',
+                          'Husky',
+                        ],
+                        imageUrl: 'assets/images/artists/husky.png',
+                        onTap: () {
+                          log('artist tap');
+                        },
+                      ),
+                      PlayListCardWidget(
+                        size: cardSized,
+                        names: const [
+                          'Husky',
+                          'Husky',
+                          'Husky',
+                          'Husky',
+                          'Husky',
+                        ],
+                        imageUrl: 'assets/images/artists/husky.png',
+                        onTap: () {
+                          log('artist tap');
+                        },
+                      ),
+                      PlayListCardWidget(
+                        size: cardSized,
+                        names: const [
+                          'Husky',
+                          'Husky',
+                          'Husky',
+                          'Husky',
+                          'Husky',
+                        ],
+                        imageUrl: 'assets/images/artists/husky.png',
+                        onTap: () {
+                          log('artist tap');
+                        },
+                      ),
+                    ],
+                  ),
+                  SuggestionListWidget(
+                    cardSize: cardSized,
+                    name: "playlist name",
+                    list: [
+                      PlayListCardWidget(
+                        size: cardSized,
+                        names: const [
+                          'Husky',
+                          'Husky',
+                          'Husky',
+                          'Husky',
+                          'Husky',
+                        ],
+                        imageUrl: 'assets/images/artists/husky.png',
+                        onTap: () {
+                          log('artist tap');
+                        },
+                      ),
+                      PlayListCardWidget(
+                        size: cardSized,
+                        names: const [
+                          'Husky',
+                          'Husky',
+                          'Husky',
+                          'Husky',
+                          'Husky',
+                        ],
+                        imageUrl: 'assets/images/artists/husky.png',
+                        onTap: () {
+                          log('artist tap');
+                        },
+                      ),
+                      PlayListCardWidget(
+                        size: cardSized,
+                        names: const [
+                          'Husky',
+                          'Husky',
+                          'Husky',
+                          'Husky',
+                          'Husky',
+                        ],
+                        imageUrl: 'assets/images/artists/husky.png',
+                        onTap: () {
+                          log('artist tap');
+                        },
+                      ),
+                      PlayListCardWidget(
+                        size: cardSized,
+                        names: const [
+                          'Husky',
+                          'Husky',
+                          'Husky',
+                          'Husky',
+                          'Husky',
+                        ],
+                        imageUrl: 'assets/images/artists/husky.png',
+                        onTap: () {
+                          log('artist tap');
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),

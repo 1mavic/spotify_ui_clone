@@ -38,8 +38,8 @@ class _AppBottomBarWidgetState extends State<AppBottomBarWidget> {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Colors.black.withOpacity(0.3),
-              Colors.black.withOpacity(0.85),
+              Colors.black.withOpacity(0.8),
+              Colors.black.withOpacity(0.99),
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
