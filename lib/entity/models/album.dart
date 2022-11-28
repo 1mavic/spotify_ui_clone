@@ -1,7 +1,9 @@
+import 'package:spotify_clone_ui/entity/models/preview.dart';
+import 'package:spotify_clone_ui/entity/models/preview_type.dart';
 import 'package:spotify_clone_ui/entity/models/song.dart';
 
 /// album entity
-class Album {
+class Album implements Preview {
   /// album entity
   Album({
     required this.albumId,
@@ -19,7 +21,7 @@ class Album {
   final String name;
 
   /// url to album cover image
-  final String cover;
+  final String? cover;
 
   /// text information about album
   final String? albumInfo;
@@ -38,4 +40,13 @@ class Album {
     }
     return total;
   }
+
+  @override
+  String? get image => cover;
+
+  @override
+  String get previewText => name;
+
+  @override
+  PreviewType get type => PreviewType.square;
 }
