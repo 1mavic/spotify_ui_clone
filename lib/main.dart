@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:spotify_clone_ui/entity/models/song.dart';
 import 'package:spotify_clone_ui/home/ui/home_screen.dart';
+import 'package:spotify_clone_ui/search/search_screen.dart';
 import 'package:spotify_clone_ui/theme/app_theme.dart';
 import 'package:spotify_clone_ui/ui/bottom_bar/app_bottom_bar.dart';
+import 'package:spotify_clone_ui/ui/players/mini_player/mini_player.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,6 +38,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late PageController tabController;
+  bool _showPlayer = false;
 
   @override
   void initState() {
@@ -50,11 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final List<Widget> tabs = [
     const HomeScreen(),
-    Container(
-      height: double.infinity,
-      width: double.infinity,
-      color: Colors.green,
-    ),
+    const SearchScreen(),
     Container(
       height: double.infinity,
       width: double.infinity,
@@ -77,13 +77,42 @@ class _MyHomePageState extends State<MyHomePage> {
               children: tabs,
             ),
             Positioned(
+              left: 5,
+              right: 5,
+              bottom: 90,
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _showPlayer = !_showPlayer;
+                  });
+                },
+                child: MiniPlayerWidget(
+                  song: Song(
+                    songId: 41,
+                    name: 'Song name',
+                    duration: const Duration(
+                      minutes: 2,
+                      seconds: 13,
+                    ),
+                  ),
+                  color: Colors.brown,
+                ),
+              ),
+            ),
+            Positioned(
               bottom: 0,
               left: 0,
               right: 0,
               child: AppBottomBarWidget(
                 onTabChange: _changeTab,
               ),
-            )
+            ),
+            if (_showPlayer)
+              AnimatedAlign(
+                duration: const Duration(milliseconds: 400),
+                alignment:
+                    _showPlayer ? Alignment.center : Alignment.bottomCenter,
+              ),
           ],
         ),
         // bottomNavigationBar: DecoratedBox(

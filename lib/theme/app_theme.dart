@@ -9,7 +9,16 @@ class ApplicationThemeData {
       headlineSmall: TextStyle(
         color: Colors.white,
       ),
+      bodyMedium: TextStyle(
+        color: Colors.white,
+      ),
       bodySmall: TextStyle(
+        color: Colors.white,
+      ),
+      bodyLarge: TextStyle(
+        color: Colors.white,
+      ),
+      titleLarge: TextStyle(
         color: Colors.white,
       ),
     ),
