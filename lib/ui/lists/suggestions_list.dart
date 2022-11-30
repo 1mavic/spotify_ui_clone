@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 
+/// list of suggestions artist, albums and playlists
 class SuggestionListWidget extends StatelessWidget {
+  /// list of suggestions artist, albums and playlists
   const SuggestionListWidget({
-    Key? key,
+    super.key,
     required this.cardSize,
     required this.name,
     required this.list,
-  }) : super(key: key);
+  });
+
+  /// name of suggestion list
   final String? name;
+
+  /// size of individual card
   final double cardSize;
+
+  /// list of suggestions widgets
   final List<Widget> list;
   @override
   Widget build(BuildContext context) {
