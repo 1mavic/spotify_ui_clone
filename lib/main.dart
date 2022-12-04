@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:spotify_clone_ui/entity/models/song.dart';
 import 'package:spotify_clone_ui/home/ui/home_screen.dart';
-import 'package:spotify_clone_ui/search/search_screen.dart';
+import 'package:spotify_clone_ui/library/ui/user_library_screen.dart';
+import 'package:spotify_clone_ui/search/ui/search_screen.dart';
 import 'package:spotify_clone_ui/theme/app_theme.dart';
 import 'package:spotify_clone_ui/ui/bottom_bar/app_bottom_bar.dart';
 import 'package:spotify_clone_ui/ui/players/mini_player/mini_player.dart';
@@ -55,11 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> tabs = [
     const HomeScreen(),
     const SearchScreen(),
-    Container(
-      height: double.infinity,
-      width: double.infinity,
-      color: Colors.red,
-    ),
+    const UserLibraryScreen(),
   ];
 
   @override

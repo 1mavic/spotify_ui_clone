@@ -21,7 +21,7 @@ class TopBarWidget extends StatelessWidget {
             flex: 3,
             child: Text(
               'Good evening',
-              style: Theme.of(context).textTheme.headlineSmall,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
           const Spacer(),
