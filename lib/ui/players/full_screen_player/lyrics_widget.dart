@@ -4,37 +4,37 @@ class _LyricsWidget extends StatelessWidget {
   const _LyricsWidget({
     required this.text,
     required this.color,
+    required this.onFullScreen,
   });
   final String text;
   final Color color;
+  final void Function(BuildContext) onFullScreen;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewPadding.bottom + 10,
-      ),
-      child: AspectRatio(
-        aspectRatio: 1,
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(
-              4,
-            ),
-            color: color,
+    return AspectRatio(
+      aspectRatio: 1,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(
+            4,
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      'Lyrics',
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                    const Spacer(),
-                    DecoratedBox(
+          color: color,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    'Lyrics',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: () => onFullScreen(context),
+                    child: DecoratedBox(
                       decoration: BoxDecoration(
                         color: Colors.black.withOpacity(
                           0.8,
@@ -66,116 +66,133 @@ class _LyricsWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Flexible(
-                  child: Stack(
-                    children: [
-                      SingleChildScrollView(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 20,
-                        ),
-                        child: Text(
-                          lyrics,
-                          style:
-                              Theme.of(context).textTheme.titleLarge?.copyWith(
-                                    color: Color.lerp(
-                                      color,
-                                      Colors.black,
-                                      0.6,
-                                    ),
-                                  ),
-                        ),
-                      ),
-                      Positioned(
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        child: SizedBox(
-                          height: 30,
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.amber.withOpacity(0.1),
-                                  Colors.amber,
-                                ],
-                                stops: const [
-                                  0.6,
-                                  1,
-                                ],
-                                begin: Alignment.bottomCenter,
-                                end: Alignment.topCenter,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: SizedBox(
-                          height: 30,
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.amber.withOpacity(0.1),
-                                  Colors.amber,
-                                ],
-                                stops: const [
-                                  0,
-                                  0.4,
-                                ],
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
                   ),
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Flexible(
+                child: TextWidget(
+                  color: color,
                 ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.white,
-                      ),
-                      borderRadius: BorderRadius.circular(
-                        45,
-                      ),
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.white,
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(
-                        8,
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          Icon(
-                            Icons.ios_share_rounded,
-                            size: 15,
-                          ),
-                          Text(
-                            'SHARE',
-                          ),
-                        ],
-                      ),
+                    borderRadius: BorderRadius.circular(
+                      45,
                     ),
                   ),
-                )
-              ],
-            ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(
+                      8,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: const [
+                        Icon(
+                          Icons.ios_share_rounded,
+                          size: 15,
+                        ),
+                        Text(
+                          'SHARE',
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
+            ],
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Widget with song lyrics with scroll
+class TextWidget extends StatelessWidget {
+  /// Widget with song lyrics with scroll
+  const TextWidget({
+    super.key,
+    required this.color,
+  });
+
+  /// background color
+  final Color color;
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(
+            vertical: 20,
+          ),
+          child: Text(
+            lyrics,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: Color.lerp(
+                    color,
+                    Colors.black,
+                    0.6,
+                  ),
+                ),
+          ),
+        ),
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: SizedBox(
+            height: 30,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.amber.withOpacity(0.1),
+                    Colors.amber,
+                  ],
+                  stops: const [
+                    0.6,
+                    1,
+                  ],
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                ),
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: SizedBox(
+            height: 30,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.amber.withOpacity(0.1),
+                    Colors.amber,
+                  ],
+                  stops: const [
+                    0,
+                    0.4,
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

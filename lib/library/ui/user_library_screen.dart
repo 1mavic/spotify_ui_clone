@@ -66,6 +66,7 @@ class _UserLibrariBottomWidget extends StatefulWidget {
 
 class __UserLibrariBottomWidgetState extends State<_UserLibrariBottomWidget> {
   final List<Widget> _list = [];
+  final List<double> _sizes = [];
   int? picked = null;
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
 
@@ -88,61 +89,68 @@ class __UserLibrariBottomWidgetState extends State<_UserLibrariBottomWidget> {
   ];
 
   void onPick(int index) {
-    final currentIndex = picked;
-    if (index == -1 && currentIndex != null) {
-      _list
-        ..removeAt(0)
-        ..insertAll(
-          0,
-          [
-            _AppBarBottomItemWidget(
-              item: _chips[currentIndex].copyWith(picked: false),
-              onPick: onPick,
-            ),
-          ],
-        );
-      setState(() {
-        picked = null;
-      });
-      return;
-    }
     if (picked == null) {
       picked = index;
-      final firstToDelete = index == 0 ? 1 : 0;
-      final secondToDelete = firstToDelete == 1 ? 2 : 0;
-      _list
-        ..removeAt(firstToDelete)
-        // ..removeAt(secondToDelete)
-        ..insert(
-          0,
-          _CancelWidet(() {
-            onPick(-1);
-          }),
-        );
+      _list.addAll([
+        _CancelWidet(
+          onCancel: () => onPick(-1),
+        ),
+        _AppBarBottomItemWidget(
+          item: _chips[0],
+          onPick: onPick,
+        ),
+        _AppBarBottomItemWidget(
+          item: _chips[1],
+          onPick: onPick,
+        ),
+        _AppBarBottomItemWidget(
+          item: _chips[2],
+          onPick: onPick,
+        ),
+      ]);
+    } else {}
+    // final currentIndex = picked;
+    // if (index == -1 && currentIndex != null) {
+    //   _list
+    //     ..removeAt(0)
+    //     ..insertAll(
+    //       0,
+    //       [
+    //         _AppBarBottomItemWidget(
+    //           item: _chips[currentIndex].copyWith(picked: false),
+    //           onPick: onPick,
+    //         ),
+    //       ],
+    //     );
+    //   setState(() {
+    //     picked = null;
+    //   });
+    //   return;
+    // }
+    // if (picked == null) {
+    //   picked = index;
+    //   final firstToDelete = index == 0 ? 1 : 0;
+    //   final secondToDelete = firstToDelete == 1 ? 2 : 0;
+    //   _list
+    //     ..removeAt(firstToDelete)
+    //     // ..removeAt(secondToDelete)
+    //     ..insert(
+    //       0,
+    //       _CancelWidet(() {
+    //         onPick(-1);
+    //       }),
+    //     );
 
-      setState(() {});
-    }
+    //   setState(() {});
+    // }
   }
 
   @override
   void initState() {
     super.initState();
-    _list.addAll([
-      _AppBarBottomItemWidget(
-        item: _chips[0],
-        onPick: onPick,
-      ),
-      _AppBarBottomItemWidget(
-        item: _chips[1],
-        onPick: onPick,
-      ),
-      _AppBarBottomItemWidget(
-        item: _chips[2],
-        onPick: onPick,
-      ),
-    ]);
   }
 
+  // TODO(mavic): make every chip animated container with opasity to 0 and width to 0
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -150,25 +158,25 @@ class __UserLibrariBottomWidgetState extends State<_UserLibrariBottomWidget> {
       height: 50,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 5),
-        child: AnimatedList(
-          key: _listKey,
-          initialItemCount: 3,
-          scrollDirection: Axis.horizontal,
-          physics: const NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.zero,
-          shrinkWrap: true,
-          itemBuilder: (context, index, animation) {
-            return FadeTransition(
-              opacity: animation,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 2.5,
-                ),
-                child: _list[index],
-              ),
-            );
-          },
-        ),
+        // child: AnimatedList(
+        //   key: _listKey,
+        //   initialItemCount: 3,
+        //   scrollDirection: Axis.horizontal,
+        //   physics: const NeverScrollableScrollPhysics(),
+        //   padding: EdgeInsets.zero,
+        //   shrinkWrap: true,
+        //   itemBuilder: (context, index, animation) {
+        //     return FadeTransition(
+        //       opacity: animation,
+        //       child: Padding(
+        //         padding: const EdgeInsets.symmetric(
+        //           horizontal: 2.5,
+        //         ),
+        //         child: _list[index],
+        //       ),
+        //     );
+        //   },
+        // ),
       ),
     );
   }
@@ -231,9 +239,9 @@ class _AppBarBottomItemWidget extends StatelessWidget {
 }
 
 class _CancelWidet extends StatelessWidget {
-  const _CancelWidet(
-    this.onCancel,
-  );
+  const _CancelWidet({
+    required this.onCancel,
+  });
   final VoidCallback onCancel;
   @override
   Widget build(BuildContext context) {
