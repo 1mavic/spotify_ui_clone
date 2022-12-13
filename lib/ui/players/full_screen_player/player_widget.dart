@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:spotify_clone_ui/entity/models/album.dart';
@@ -28,14 +30,129 @@ class PLayerWidget extends StatefulWidget {
   State<PLayerWidget> createState() => _PLayerWidgetState();
 }
 
-class _PLayerWidgetState extends State<PLayerWidget> {
+class _PLayerWidgetState extends State<PLayerWidget>
+    with SingleTickerProviderStateMixin {
   late PageController _controller;
+  late AnimationController _animationController;
+  late Animation<double> _animation;
+
+  final color = Colors.amber;
   int _currentSong = 0;
   bool isPlaying = true;
   @override
   void initState() {
     super.initState();
     _controller = PageController();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(
+        milliseconds: 300,
+      ),
+    );
+    _animation = Tween<double>(
+      begin: 0,
+      end: 1,
+    ).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.linear,
+      ),
+    );
+  }
+
+  Future<void> _showOverlay(
+    BuildContext context,
+    String songName,
+    String artistName,
+    Color color,
+  ) async {
+    final overlayState = Overlay.of(context);
+    OverlayEntry? overlayEntry;
+    final topSize = 56 + MediaQuery.of(context).viewPadding.top;
+    final renderObject = context.findRenderObject() as RenderBox?;
+    final size = renderObject?.size;
+    overlayEntry = OverlayEntry(
+      builder: (context) {
+        return Positioned(
+          left: 0,
+          top: 0,
+          bottom: 0,
+          child: Material(
+            color: Colors.transparent,
+            child: Stack(
+              children: [
+                SizeTransition(
+                  sizeFactor: _animation,
+                  child: Container(
+                    height: topSize,
+                    color: color,
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        RotatedBox(
+                          quarterTurns: 3,
+                          child: IconButton(
+                            onPressed: () {
+                              _animationController.reverse();
+                            },
+                            icon: const Icon(
+                              Icons.chevron_left_outlined,
+                            ),
+                          ),
+                        ),
+                        const Text(
+                          'songName\nartistName',
+                        ),
+                        IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.flag_outlined,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                AnimatedBuilder(
+                  animation: _animation,
+                  builder: (context, child) {
+                    return Positioned(
+                      left: 10 - 10 * _animation.value,
+                      right: 10 - 10 * _animation.value,
+                      top: topSize +
+                          (1 - _animation.value) * ((size?.height ?? 0) + 30),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height - topSize,
+                        color: color,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                        ),
+                        alignment: Alignment.center,
+                        child: child,
+                      ),
+                    );
+                  },
+                  child: TextWidget(color: color),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+    _animationController.addListener(() {
+      overlayState?.setState(() {});
+      if (_animationController.isDismissed) {
+        overlayEntry?.remove();
+        overlayEntry = null;
+      }
+    });
+    overlayState!.insert(overlayEntry!);
+    unawaited(_animationController.forward());
   }
 
   @override
@@ -191,13 +308,21 @@ class _PLayerWidgetState extends State<PLayerWidget> {
               const SizedBox(
                 height: 40,
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(
+              Padding(
+                padding: const EdgeInsets.symmetric(
                   horizontal: 10,
+                ).copyWith(
+                  bottom: MediaQuery.of(context).viewPadding.bottom + 10,
                 ),
                 child: _LyricsWidget(
                   text: '',
-                  color: Colors.amber,
+                  color: color,
+                  onFullScreen: (ctx) => _showOverlay(
+                    ctx,
+                    widget.album.songs[_currentSong].name,
+                    'artist',
+                    color,
+                  ),
                 ),
               ),
             ],
